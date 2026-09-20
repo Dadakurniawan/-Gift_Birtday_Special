@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kado Digital Tiaaa - Birthday Experience</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pastel-pink': '#FFD6E8',
+                        'pastel-purple': '#E8D5C4',
+                        'soft-lavender': '#EAE6FF',
+                        'matcha': '#C8E6C9',
+                        'matcha-dark': '#81C784',
+                        'accent-magenta': '#FF4B8B',
+                        'warm-cream': '#FFFDF9',
+                    },
+                    fontFamily: {
+                        display: ['Fredoka', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                        handwriting: ['Sacramento', 'cursive'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #FFDBF0 0%, #EAE6FF 50%, #F5ECFF 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            position: relative;
+            background:
+                radial-gradient(circle at 8% 8%, rgba(255, 190, 218, .22), transparent 23%),
+                radial-gradient(circle at 94% 92%, rgba(194, 180, 255, .2), transparent 25%),
+                linear-gradient(135deg, rgba(255, 255, 255, .78), rgba(255, 248, 253, .58));
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px rgba(255, 182, 193, 0.25), 0 2px 0 rgba(255,255,255,.75) inset;
+            isolation: isolate;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 9px;
+            border: 1px dashed rgba(221, 164, 203, .23);
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .glass-card::after {
+            content: '✦  ·  ✧';
+            position: absolute;
+            top: 14px;
+            right: 22px;
+            color: rgba(211, 133, 187, .55);
+            font-size: 15px;
+            letter-spacing: 5px;
+            pointer-events: none;
+            animation: cardTwinkle 3.5s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        .glass-card-sm {
+            background:
+                radial-gradient(circle at 90% 15%, rgba(255, 200, 224, .25), transparent 25%),
+                rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 25px rgba(255, 182, 193, .18), 0 2px 0 rgba(255,255,255,.8) inset;
+        }
+        @keyframes cardTwinkle {
+            0%, 100% { opacity: .45; transform: scale(.9) rotate(0); }
+            50% { opacity: 1; transform: scale(1.12) rotate(8deg); }
+        }
+        .card-confetti {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            font-size: 18px;
+            filter: drop-shadow(0 3px 3px rgba(128, 82, 116, .14));
+            animation: cardConfettiFloat 4s ease-in-out infinite;
+        }
+        .card-confetti-left { left: 18px; bottom: 16px; }
+        .card-confetti-right { right: 18px; bottom: 16px; animation-delay: -1.5s; }
+        .card-confetti-top { left: 24px; top: 18px; font-size: 13px; animation-delay: -.8s; }
+        @keyframes cardConfettiFloat {
+            0%, 100% { transform: translateY(0) rotate(-8deg); opacity: .65; }
+            50% { transform: translateY(-6px) rotate(8deg); opacity: 1; }
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        .animate-float-delayed {
+            animation: float 5s ease-in-out 1.5s infinite;
+        }
+
+        /* Heart particle background styling */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.6;
+        }
+        .mascot-particle {
+            position: fixed;
+            width: clamp(34px, 5vw, 62px);
+            height: clamp(34px, 5vw, 62px);
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, .82);
+            border-radius: 35% 35% 45% 45%;
+            box-shadow: 0 5px 12px rgba(109, 76, 102, .18);
+            pointer-events: none;
+            z-index: 1;
+            opacity: .72;
+            animation: mascotFloatUp 12s linear infinite;
+        }
+        @keyframes mascotFloatUp {
+            0% {
+                transform: translateY(110vh) rotate(-8deg) scale(.72);
+                opacity: 0;
+            }
+            12% { opacity: .72; }
+            50% { transform: translateY(45vh) rotate(8deg) scale(1); }
+            84% { opacity: .72; }
+            100% {
+                transform: translateY(-18vh) rotate(-8deg) scale(.82);
+                opacity: 0;
+            }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0.5) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        /* Vinyl Spin Animation */
+        @keyframes spinSlow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spinSlow 12s linear infinite;
+        }
+        .paused {
+            animation-play-state: paused !important;
+        }
+
+        /* Candle Flame Flicker */
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-2deg); opacity: 0.9; }
+            50% { transform: scale(1.15) rotate(2deg); opacity: 1; filter: drop-shadow(0 0 10px #ff9800); }
+        }
+        .flame {
+            animation: flicker 0.6s infinite alternate ease-in-out;
+            transform-origin: bottom center;
+        }
+
+        /* Envelope Styles */
+        .envelope-wrapper {
+            perspective: 1000px;
+        }
+        .envelope {
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.45s cubic-bezier(.2,.8,.2,1), box-shadow 0.45s ease, filter 0.45s ease;
+            background: #f5d7dd url('envelope-reference.jpeg') center / cover no-repeat;
+            border-color: rgba(255, 255, 255, .9);
+            min-height: 260px;
+            overflow: visible;
+            transform: perspective(900px) rotateX(1deg) rotateZ(-1deg);
+            box-shadow: 0 22px 28px rgba(126, 91, 103, .25), 0 5px 0 rgba(255,255,255,.7) inset;
+        }
+        .envelope::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(125deg, rgba(255,255,255,.38), transparent 34%, transparent 70%, rgba(255,255,255,.2));
+            opacity: .7;
+            pointer-events: none;
+            transition: opacity .35s ease;
+            z-index: 2;
+        }
+        .envelope::after {
+            content: 'Klik untuk membuka';
+            position: absolute;
+            left: 50%;
+            bottom: 14px;
+            transform: translateX(-50%) translateY(6px);
+            padding: 7px 13px;
+            border-radius: 999px;
+            color: #a94f72;
+            background: rgba(255,255,255,.84);
+            box-shadow: 0 5px 12px rgba(108, 72, 90, .18);
+            font: 600 11px 'Plus Jakarta Sans', sans-serif;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease, transform .3s ease;
+            z-index: 12;
+        }
+        .envelope:hover {
+            transform: perspective(900px) rotateX(0deg) rotateZ(0deg) translateY(-6px) scale(1.015);
+            box-shadow: 0 29px 35px rgba(126, 91, 103, .3), 0 5px 0 rgba(255,255,255,.75) inset;
+        }
+        .envelope:hover::before { opacity: 1; }
+        .envelope:not(.open):hover::after {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .envelope:active {
+            transform: perspective(900px) rotateX(2deg) scale(.985);
+        }
+        .flap {
+            display: none;
+        }
+        .envelope.open .flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+        .letter {
+            transition: transform 0.8s ease 0.5s, opacity 0.5s ease 0.5s;
+        }
+        .envelope.open .letter {
+            transform: translateY(-120px) scale(1);
+            z-index: 10;
+        }
+        .envelope.open {
+            transform: perspective(900px) rotateX(0deg) rotateZ(0deg) scale(1.02);
+            box-shadow: 0 30px 40px rgba(126, 91, 103, .28), 0 5px 0 rgba(255,255,255,.7) inset;
+        }
+        .envelope.open::before { opacity: .25; }
+
+        /* Claymation-style Soft Shadows */
+        .clay-button {
+            box-shadow: 0 8px 0 #E23875, 0 15px 20px rgba(255, 75, 139, 0.35);
+            transition: all 0.15s ease;
+        }
+        .clay-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #E23875, 0 8px 10px rgba(255, 75, 139, 0.35);
+        }
+
+        .clay-badge {
+            box-shadow: inset -3px -3px 6px rgba(0,0,0,0.1), inset 3px 3px 6px rgba(255,255,255,0.8), 0 8px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Pastel two-tier birthday cake */
+        .cake-stage {
+            position: relative;
+            width: min(100%, 390px);
+            height: min(90vw, 390px);
+            aspect-ratio: 1;
+            margin: 1rem auto 0;
+            isolation: isolate;
+            overflow: hidden;
+            border-radius: 18px;
+            box-shadow: 0 12px 25px rgba(137, 94, 91, .18);
+        }
+        .cake-reference-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: inherit;
+        }
+        .gift-reference-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .cake-candle {
+            position: absolute;
+            top: 5%;
+            z-index: 12;
+            cursor: pointer;
+            width: 16%;
+            height: 19%;
+        }
+        .cake-candle-left { left: 37%; }
+        .cake-candle-right { right: 37%; }
+        .cake-candle .flame {
+            width: auto !important;
+            height: auto !important;
+            margin: 0 auto;
+            background: transparent !important;
+            font-size: clamp(28px, 8vw, 42px);
+            line-height: .85;
+            filter: drop-shadow(0 0 5px #ffd66b) drop-shadow(0 0 12px rgba(255, 155, 35, .9));
+            text-shadow: 0 0 7px rgba(255, 246, 178, .95), 0 0 15px rgba(255, 156, 43, .75);
+        }
+        .mascot-dock {
+            position: fixed;
+            left: clamp(10px, 3vw, 42px);
+            right: clamp(10px, 3vw, 42px);
+            bottom: clamp(12px, 3vw, 28px);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .mascot-button {
+            width: clamp(70px, 11vw, 118px);
+            aspect-ratio: 1;
+            padding: 0;
+            border: 4px solid rgba(255, 255, 255, .9);
+            border-radius: 32% 32% 42% 42%;
+            overflow: hidden;
+            cursor: pointer;
+            pointer-events: auto;
+            background: #f6c5d2;
+            box-shadow: 0 10px 18px rgba(109, 76, 102, .22);
+            transition: transform .25s ease, box-shadow .25s ease;
+            animation: mascotFloat 4.5s ease-in-out infinite;
+        }
+        .mascot-button:last-child { animation-delay: -2.1s; }
+        .mascot-button:hover,
+        .mascot-button:focus-visible {
+            transform: translateY(-8px) scale(1.06) rotate(-2deg);
+            box-shadow: 0 16px 24px rgba(109, 76, 102, .3);
+            outline: 3px solid rgba(255, 178, 207, .65);
+            outline-offset: 3px;
+        }
+        .mascot-button:active { transform: scale(.94) rotate(2deg); }
+        .mascot-button.is-happy { animation: mascotCelebrate .65s ease both; }
+        .mascot-button img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .card-mascot {
+            position: absolute;
+            top: 14px;
+            width: clamp(48px, 8vw, 76px);
+            height: clamp(48px, 8vw, 76px);
+            object-fit: cover;
+            border: 3px solid rgba(255, 255, 255, .9);
+            border-radius: 35% 35% 45% 45%;
+            box-shadow: 0 7px 14px rgba(109, 76, 102, .18);
+            z-index: 3;
+            pointer-events: none;
+            animation: cardMascotFloat 4s ease-in-out infinite;
+        }
+        .card-mascot-left { left: 16px; }
+        .card-mascot-right { right: 16px; animation-delay: -1.8s; }
+        .card-mascot-pair {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            display: flex;
+            gap: 4px;
+            z-index: 3;
+            pointer-events: none;
+        }
+        .card-mascot-pair img {
+            width: clamp(38px, 6vw, 58px);
+            height: clamp(38px, 6vw, 58px);
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, .9);
+            border-radius: 35%;
+            box-shadow: 0 6px 12px rgba(109, 76, 102, .16);
+        }
+        @keyframes cardMascotFloat {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-5px) rotate(3deg); }
+        }
+        @media (max-width: 640px) {
+            .card-mascot { top: 10px; width: 48px; height: 48px; }
+            .card-mascot-left { left: 10px; }
+            .card-mascot-right { right: 10px; }
+            .card-mascot-pair { top: 9px; right: 10px; }
+            .card-mascot-pair img { width: 38px; height: 38px; }
+        }
+        @keyframes mascotFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+        @keyframes mascotCelebrate {
+            0% { transform: scale(1) rotate(0); }
+            35% { transform: scale(1.16) rotate(-8deg); }
+            70% { transform: scale(1.08) rotate(8deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        @media (max-width: 640px) {
+            .mascot-dock { bottom: 76px; }
+            .mascot-button { width: 64px; border-width: 3px; }
+        }
+        .matcha-experience {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(126, 165, 91, .28);
+            background:
+                radial-gradient(circle at 12% 18%, rgba(255,255,255,.8), transparent 27%),
+                radial-gradient(circle at 90% 85%, rgba(178, 211, 133, .36), transparent 35%),
+                linear-gradient(135deg, rgba(246, 255, 226, .96), rgba(219, 240, 191, .82));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.95), 0 14px 26px rgba(107, 139, 73, .16);
+        }
+        .matcha-experience::before {
+            content: '🍃  ✿  🍃  ✿  🍃';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            color: rgba(87, 128, 55, .35);
+            font-size: 12px;
+            letter-spacing: 9px;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+        .matcha-art {
+            position: relative;
+            width: min(100%, 285px);
+            margin: 12px auto 10px;
+            border-radius: 28px;
+            cursor: pointer;
+            isolation: isolate;
+            transition: transform .3s ease, filter .3s ease;
+        }
+        .matcha-art:hover { transform: translateY(-5px) rotate(-1deg); filter: saturate(1.08); }
+        .matcha-art.is-whisking { animation: matchaWhisk .8s ease-in-out; }
+        .matcha-art img {
+            display: block;
+            width: 100%;
+            border-radius: 28px;
+            box-shadow: 0 15px 22px rgba(99, 125, 69, .22);
+            user-select: none;
+        }
+        .matcha-ripple {
+            position: absolute;
+            inset: 25% 22%;
+            border: 3px solid rgba(255,255,255,.8);
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .matcha-art.is-sipped .matcha-ripple { animation: matchaRipple .8s ease-out; }
+        .matcha-steam {
+            position: absolute;
+            top: 9%;
+            left: 42%;
+            color: rgba(255,255,255,.78);
+            font-size: 25px;
+            line-height: .7;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .matcha-art.is-steaming .matcha-steam { animation: matchaSteam 1.4s ease-out; }
+        .matcha-petal {
+            position: absolute;
+            z-index: 2;
+            pointer-events: none;
+            animation: matchaPetalFall 1.3s ease-out forwards;
+        }
+        .matcha-ice {
+            position: absolute;
+            z-index: 3;
+            pointer-events: none;
+            font-size: 22px;
+            animation: matchaIceDrop .95s ease-out forwards;
+        }
+        .matcha-controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+        .matcha-action {
+            border: 1px solid rgba(92, 137, 62, .28);
+            background: rgba(255,255,255,.74);
+            color: #477238;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+        }
+        .matcha-action:hover, .matcha-action:focus-visible {
+            background: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(93, 132, 66, .18);
+            outline: none;
+        }
+        .matcha-meter {
+            height: 8px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(117, 155, 82, .2);
+        }
+        .matcha-meter-fill {
+            width: 0;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #8fbd62, #477238);
+            transition: width .4s ease;
+        }
+        @keyframes matchaWhisk {
+            0%, 100% { transform: rotate(0) scale(1); }
+            25% { transform: rotate(-4deg) scale(1.03); }
+            75% { transform: rotate(4deg) scale(1.03); }
+        }
+        @keyframes matchaRipple {
+            0% { opacity: .85; transform: scale(.35); }
+            100% { opacity: 0; transform: scale(1.35); }
+        }
+        @keyframes matchaSteam {
+            0% { opacity: 0; transform: translateY(12px) scale(.8); }
+            35% { opacity: .85; }
+            100% { opacity: 0; transform: translateY(-35px) scale(1.2); }
+        }
+        @keyframes matchaPetalFall {
+            0% { opacity: 1; transform: translate(0, 0) rotate(0) scale(.7); }
+            100% { opacity: 0; transform: translate(var(--petal-x), var(--petal-y)) rotate(260deg) scale(1); }
+        }
+        @keyframes matchaIceDrop {
+            0% { opacity: 0; transform: translateY(-35px) rotate(-25deg) scale(.7); }
+            25% { opacity: 1; }
+            72% { opacity: 1; transform: translateY(35px) rotate(15deg) scale(1); }
+            100% { opacity: 0; transform: translateY(55px) rotate(35deg) scale(.85); }
+        }
+        .catch-game-board {
+            position: relative;
+            height: 430px;
+            overflow: hidden;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, .85);
+            background: linear-gradient(180deg, rgba(255, 225, 239, .8), rgba(226, 220, 255, .8));
+            box-shadow: inset 0 0 35px rgba(255,255,255,.55);
+            touch-action: manipulation;
+        }
+        .catch-game-board::before {
+            content: 'Tangkap yang jatuh sebelum menghilang! ✨';
+            position: absolute;
+            top: 14px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+            max-width: 90%;
+            color: rgba(111, 78, 119, .65);
+            font: 600 11px 'Plus Jakarta Sans', sans-serif;
+            pointer-events: none;
+        }
+        .catch-object {
+            position: absolute;
+            top: -64px;
+            width: 54px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            padding: 0;
+            background: transparent;
+            font-size: 39px;
+            line-height: 1;
+            cursor: pointer;
+            filter: drop-shadow(0 5px 5px rgba(105, 70, 110, .22));
+            animation: catchFall linear forwards;
+            z-index: 2;
+        }
+        .catch-object.mascot {
+            width: 62px;
+            height: 62px;
+            border: 3px solid white;
+            border-radius: 35%;
+            overflow: hidden;
+            background: #f6c5d2;
+        }
+        .catch-object.mascot img { width: 100%; height: 100%; object-fit: cover; }
+        .catch-object:active { transform: scale(.8); }
+        @keyframes catchFall {
+            to { transform: translateY(500px) rotate(360deg); opacity: .25; }
+        }
+        .catch-game-hud {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 14px 0;
+        }
+        .catch-stat {
+            min-width: 92px;
+            padding: 8px 13px;
+            border-radius: 14px;
+            background: rgba(255,255,255,.76);
+            border: 1px solid rgba(255,255,255,.9);
+            color: #a54b79;
+            font: 700 12px 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB3D1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased selection:bg-pink-200 selection:text-pink-800">
+
+    <!-- Background Hearts Particle Container -->
+    <div id="heart-container" class="fixed inset-0 pointer-events-none z-0"></div>
+    <div class="mascot-dock" aria-label="Maskot ulang tahun interaktif">
+        <button class="mascot-button" type="button" onclick="celebrateMascot(this)" aria-label="Maskot bear, klik untuk menyapa">
+            <img src="bear-reference.jpeg" alt="Maskot bear ulang tahun">
+        </button>
+        <button class="mascot-button" type="button" onclick="celebrateMascot(this)" aria-label="Maskot cat, klik untuk menyapa">
+            <img src="cat-reference.jpeg" alt="Maskot cat ulang tahun">
+        </button>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div class="relative z-10 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
+
+        <!-- HEADER / NAVIGATION -->
+        <header class="w-full flex justify-between items-center py-4 px-6 glass-card rounded-3xl mb-6">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-400 to-rose-300 flex items-center justify-center text-white font-display font-bold text-xl shadow-md">
+                    T
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-lg text-gray-800 leading-tight">"Tiaaa's Special Day ✨"</h1>
+                    <p class="text-xs text-pink-500 font-medium">Special Birthday Experience</p>
+                </div>
+            </div>
+
+            <!-- Tab Switcher (Visible after unlock) -->
+            <nav id="nav-tabs" class="hidden sm:flex items-center space-x-1 bg-white/50 p-1.5 rounded-2xl border border-white/60">
+                <button onclick="switchTab('cake')" id="tab-cake" class="px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-pink-500 text-white shadow-sm">
+                    🎂 Lilin & Cake
+                </button>
+                <button onclick="switchTab('letter')" id="tab-letter" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:text-pink-500 transition-all duration-300">
+                    💌 Surat
+                </button>
+                <button onclick="switchTab('music')" id="tab-music" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:text-pink-500 transition-all duration-300">
+                    🎵 Music Vinyl
+                </button>
+                <button onclick="switchTab('matcha')" id="tab-matcha" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:text-pink-500 transition-all duration-300">
+                    🍵 Matcha Date
+                </button>
+                <button onclick="switchTab('game')" id="tab-game" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:text-pink-500 transition-all duration-300">
+                    🎮 Game
+                </button>
+            </nav>
+
+            <button onclick="toggleAudioSynth()" id="btn-sound-toggle" class="w-9 h-9 rounded-xl bg-white/80 border border-pink-200 flex items-center justify-center text-pink-500 hover:bg-pink-50 transition-all">
+                <i class="fas fa-volume-up text-sm"></i>
+            </button>
+        </header>
+
+        <!-- SCREEN 1: WELCOME & PASSCODE GATEKEEPER -->
+        <main id="screen-welcome" class="w-full max-w-md my-auto flex flex-col items-center">
+            <div class="glass-card w-full rounded-3xl p-8 text-center relative overflow-hidden">
+                <span class="card-confetti card-confetti-top">✦</span>
+                <span class="card-confetti card-confetti-left">🌸</span>
+                <span class="card-confetti card-confetti-right">💖</span>
+                
+                <!-- Floating Decorative Clay Stickers -->
+                <div class="absolute -top-4 -left-4 w-16 h-16 animate-float pointer-events-none">
+                    <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+                        <path d="M50 15 C30 0 0 25 25 65 L50 90 L75 65 C100 25 70 0 50 15 Z" fill="#FF85A1"/>
+                    </svg>
+                </div>
+                <div class="absolute -bottom-4 -right-4 w-16 h-16 animate-float-delayed pointer-events-none">
+                    <div class="text-4xl">🧸</div>
+                </div>
+
+                <div class="w-24 h-24 mx-auto mb-4 relative rounded-full bg-pink-100 border-4 border-white shadow-inner">
+                    <img class="gift-reference-image" src="gift-reference.jpeg" alt="Kado ulang tahun pastel dengan pita ungu dan hati warna-warni">
+                    <span class="absolute bottom-0 right-0 bg-pink-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow-sm">✨</span>
+                </div>
+
+                <h2 class="font-display text-2xl font-bold text-gray-800 mb-1">Haiii, Tiaaa! 💕🌷</h2>
+                <p class="text-xs text-gray-500 mb-6">Ada kejutan kecil khusus buat princesss!!!</p>
+
+                <!-- Passcode Input Form -->
+                <div class="space-y-4">
+                    <div class="relative">
+                        <input type="password" maxlength="4" id="passcode-input" placeholder="••••" 
+                               class="w-full text-center text-2xl tracking-[0.5em] font-display font-bold py-3.5 px-4 rounded-2xl bg-white/80 border-2 border-pink-200 focus:border-pink-500 focus:outline-none transition-all shadow-inner text-pink-600 placeholder:tracking-normal placeholder:text-gray-300">
+                        <p id="error-msg" class="text-xs text-rose-500 mt-1.5 hidden font-medium">Password salah. Hanya password rahasia yang dapat membuka kado ini 😉</p>
+                    </div>
+
+                    <button onclick="unlockExperience()" class="w-full clay-button bg-gradient-to-r from-pink-500 to-rose-400 text-white font-display font-bold text-lg py-3.5 px-6 rounded-2xl cursor-pointer hover:brightness-105 active:scale-98 transition-all flex items-center justify-center space-x-2">
+                        <span>Buka Hadiah</span>
+                        <i class="fas fa-sparkles text-yellow-300"></i>
+                    </button>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-pink-100/60 flex justify-center items-center gap-2 text-xs text-gray-400">
+                    <i class="fas fa-heart text-pink-300"></i>
+                    <span>Made with love for your special day</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- SCREEN 2: MAIN EXPERIENCE CONTAINER (HIDDEN UNTIL UNLOCKED) -->
+        <main id="screen-main" class="w-full hidden my-auto flex flex-col items-center">
+            
+            <!-- Mobile Bottom Tab Navigation -->
+            <div class="sm:hidden fixed bottom-4 left-4 right-4 z-50 glass-card rounded-2xl p-2 flex justify-around items-center border border-white/80">
+                <button onclick="switchTab('cake')" id="mob-tab-cake" class="p-2 rounded-xl text-xs font-bold text-pink-500 flex flex-col items-center">
+                    <span class="text-base">🎂</span>
+                    <span>Lilin</span>
+                </button>
+                <button onclick="switchTab('letter')" id="mob-tab-letter" class="p-2 rounded-xl text-xs font-semibold text-gray-500 flex flex-col items-center">
+                    <span class="text-base">💌</span>
+                    <span>Surat</span>
+                </button>
+                <button onclick="switchTab('music')" id="mob-tab-music" class="p-2 rounded-xl text-xs font-semibold text-gray-500 flex flex-col items-center">
+                    <span class="text-base">🎵</span>
+                    <span>Music</span>
+                </button>
+                <button onclick="switchTab('matcha')" id="mob-tab-matcha" class="p-2 rounded-xl text-xs font-semibold text-gray-500 flex flex-col items-center">
+                    <span class="text-base">🍵</span>
+                    <span>Ticket</span>
+                </button>
+                <button onclick="switchTab('game')" id="mob-tab-game" class="p-2 rounded-xl text-xs font-semibold text-gray-500 flex flex-col items-center">
+                    <span class="text-base">🎮</span>
+                    <span>Game</span>
+                </button>
+            </div>
+
+            <!-- SECTION 1: INTERACTIVE BIRTHDAY CAKE -->
+            <section id="section-cake" class="w-full max-w-2xl flex flex-col items-center">
+                <div class="glass-card w-full rounded-3xl p-6 sm:p-10 text-center relative">
+                    <img class="card-mascot card-mascot-left" src="bear-reference.jpeg" alt="" aria-hidden="true">
+                    <span class="card-confetti card-confetti-left">✦</span>
+                    <span class="card-confetti card-confetti-right">💖</span>
+                    
+                    <div class="inline-block bg-pink-100 text-pink-600 px-4 py-1.5 rounded-full font-display font-semibold text-xs mb-4 shadow-sm border border-pink-200">
+                        ✨ Tiup Lilinnya & Buat Permohonan! ✨
+                    </div>
+                    <h2 class="font-display font-bold text-2xl sm:text-3xl text-gray-800 mb-2">Happy Birthday, Tiaaa! 🎉</h2>
+                    <p class="text-xs sm:text-sm text-gray-600 mb-8 max-w-md mx-auto">Klik pada lilin atau tombol di bawah untuk meniup lilinnya ya!</p>
+
+                    <!-- Interactive pastel two-tier cake inspired by the reference image -->
+                    <div class="cake-stage" aria-label="Kue ulang tahun sesuai gambar referensi">
+                        <img class="cake-reference-image" src="cake-reference.jpeg" alt="Kue ulang tahun pastel dua tingkat dengan lilin angka 20">
+
+                        <div onclick="extinguishCandle(1)" id="candle-1" class="cake-candle cake-candle-left">
+                            <div id="flame-1" class="flame" role="img" aria-label="Api lilin menyala">🔥</div>
+                        </div>
+                        <div onclick="extinguishCandle(2)" id="candle-2" class="cake-candle cake-candle-right">
+                            <div id="flame-2" class="flame" role="img" aria-label="Api lilin menyala">🔥</div>
+                        </div>
+                    </div>
+
+                    <!-- Candle Action Button -->
+                    <div class="mt-8 flex justify-center gap-3">
+                        <button onclick="blowOutAllCandles()" id="btn-blow" class="clay-button bg-pink-500 hover:bg-pink-600 text-white font-display font-semibold text-sm py-3 px-6 rounded-2xl transition-all flex items-center gap-2">
+                            <span>💨 Tiup Semua Lilin</span>
+                        </button>
+                        <button onclick="startBlowDetection()" id="btn-mic-blow" class="bg-white/80 border border-pink-200 hover:bg-pink-50 text-pink-600 font-display font-semibold text-sm py-3 px-4 rounded-2xl transition-all">
+                            <span>🎙️ Tiup dengan Suara</span>
+                        </button>
+                    </div>
+                    <p id="blow-status" class="mt-3 text-xs text-gray-500" role="status">Klik “Tiup dengan Suara”, lalu tiup ke mikrofon.</p>
+
+                    <div id="wish-message" class="mt-6 hidden p-4 bg-pink-50 border border-pink-200 rounded-2xl text-pink-700 font-medium text-sm animate-bounce">
+                        🎉 Yaaay! Lilin berhasil ditiup! Semoga semua doa & harapan Tiaaa terkabul ya! 🌟
+                    </div>
+
+                    <div class="glass-card-sm w-full rounded-2xl p-5 mt-8 text-center">
+                        <h4 class="font-display font-semibold text-sm text-gray-700 mb-3">Gimana perasaan Tiaaa dapat kado digital ini? 💭</h4>
+                        <div class="grid grid-cols-3 gap-3">
+                            <button onclick="selectReaction(this, 'Biasa saja 😄')" class="reaction-card p-3 rounded-xl bg-white/80 hover:bg-pink-100 border border-pink-100 transition-all text-center flex flex-col items-center gap-1 group">
+                                <span class="text-2xl group-hover:scale-125 transition-transform">😄</span>
+                                <span class="text-[11px] font-medium text-gray-600">Biasa Saja</span>
+                            </button>
+                            <button onclick="selectReaction(this, 'Lumayan Kaget 😮')" class="reaction-card p-3 rounded-xl bg-white/80 hover:bg-pink-100 border border-pink-100 transition-all text-center flex flex-col items-center gap-1 group">
+                                <span class="text-2xl group-hover:scale-125 transition-transform">😮</span>
+                                <span class="text-[11px] font-medium text-gray-600">Lumayan Kaget</span>
+                            </button>
+                            <button onclick="selectReaction(this, 'Terharu Banget 🥺')" class="reaction-card p-3 rounded-xl bg-white/80 hover:bg-pink-100 border border-pink-100 transition-all text-center flex flex-col items-center gap-1 group">
+                                <span class="text-2xl group-hover:scale-125 transition-transform">🥺</span>
+                                <span class="text-[11px] font-medium text-gray-600">Terharu Banget</span>
+                            </button>
+                        </div>
+                        <div id="reaction-thanks" class="mt-3 text-xs text-pink-600 font-semibold hidden animate-fade-in">
+                            Makasih responnya Tiaaa! ❤️
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: ENVELOPE & LETTER -->
+            <section id="section-letter" class="w-full max-w-2xl hidden flex-col items-center">
+                <div class="glass-card w-full rounded-3xl p-6 sm:p-10 text-center relative">
+                    <img class="card-mascot card-mascot-right" src="cat-reference.jpeg" alt="" aria-hidden="true">
+                    <span class="card-confetti card-confetti-left">🌸</span>
+                    <span class="card-confetti card-confetti-right">✧</span>
+                    
+                    <h2 class="font-display font-bold text-2xl text-gray-800 mb-2">Surat Spesial Untuk Tiaaa 💌</h2>
+                    <p class="text-xs text-gray-500 mb-8">Klik amplop di bawah ini untuk membuka & membaca pesannya</p>
+
+                    <!-- Interactive Envelope Container -->
+                    <div class="envelope-wrapper my-6 flex justify-center">
+                        <div id="envelope-box" onclick="toggleEnvelope()" class="envelope w-72 sm:w-80 h-64 sm:h-72 rounded-2xl shadow-xl cursor-pointer relative flex flex-col items-center justify-center border-2">
+                            
+                            <!-- Reference image supplies the envelope cover; this wrapper remains interactive. -->
+                            <div class="flap" aria-hidden="true"></div>
+
+                            <!-- Inside Letter Paper preview -->
+                            <div id="letter-content" class="letter absolute inset-x-4 top-2 bottom-2 bg-warm-cream rounded-xl p-5 shadow-2xl border border-pink-100 flex flex-col justify-between opacity-0 pointer-events-none text-left overflow-y-auto max-h-[380px]">
+                                <div>
+                                    <div class="flex justify-between items-center mb-3 pb-2 border-b border-pink-100">
+                                        <span class="font-handwriting text-2xl font-bold text-pink-600">Dear Tiaaa,</span>
+                                        <span class="text-[10px] text-gray-400 font-mono">Special Day, 22-092026</span>
+                                    </div>
+                                    <p class="text-xs text-gray-700 leading-relaxed space-y-2">
+                                        From dadaa ✨🌷<br><br>
+                                        Happy Birthday tiaaa!🎉<br><br>
+                                        Barakallah fii umrik nyaaa, semoga selalu diberkahkan umur dan rizkinyaa, sukses selalu dunia-akhiratnya doa terbaik untuk orang baik dan special ini hehehe.<br><br>
+                                        Semoga dengan bertambahnya usia inii, setiap langkahnyaa makin dipenuhi kebahagiaan,dipenuhi hal-hal manis, kesehatan, dan impian-impian besar yang perlahan terwujud.<br><br>
+                                        ingett sudah dikepala duaa niiii yaaa wkwk!!!, semoga tetap istiqomah dalam hal-hal nu baik yaawww✨🌸🎉<br><br>
+                                        Terima kasih sudah menjadi sosok yang ceria dan menginspirasi. Tetap jadi Tiaaa yang penyabar, hangat, dan selalu membawa tawa buat orang-orang di sekitarmu yaaawww!✨🌸🌷💕 💖 💗🧚‍♀️
+                                    </p>
+                                </div>
+                                <div class="mt-4 pt-3 border-t border-pink-100 flex justify-between items-end">
+                                    <div class="text-[10px] text-pink-400 italic">With all best wishes,</div>
+                                    <div class="font-handwriting text-xl text-pink-600">Your Special Friend</div>
+                                </div>
+                            </div>
+
+                            <!-- Envelope Front Cover Badge -->
+                            <div id="envelope-cover-text" class="z-0 text-center">
+                                <div class="text-4xl mb-1 drop-shadow-md">💌</div>
+                                <span class="font-display text-xs font-bold text-pink-700 bg-white/85 px-3 py-1 rounded-full shadow-sm">Sentuh amplopnya</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="letter-hint" class="mt-4 text-xs text-pink-500 font-medium">
+                        (Sentuh amplop untuk membuka atau menutup surat)
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: VINYL MUSIC PLAYER -->
+            <section id="section-music" class="w-full max-w-2xl hidden flex-col items-center">
+                <div class="glass-card w-full rounded-3xl p-6 sm:p-8 text-center relative">
+                    <div class="card-mascot-pair" aria-hidden="true">
+                        <img src="bear-reference.jpeg" alt="">
+                        <img src="cat-reference.jpeg" alt="">
+                    </div>
+                    <span class="card-confetti card-confetti-left">🎵</span>
+                    <span class="card-confetti card-confetti-right">✨</span>
+                    
+                    <div class="inline-block bg-purple-100 text-purple-600 px-4 py-1 rounded-full font-display font-semibold text-xs mb-3">
+                        🎵 Pemutar Musik Vinyl Aesthetic
+                    </div>
+                    <h2 class="font-display font-bold text-2xl text-gray-800 mb-6">Birthday Soundtracks</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        
+                        <!-- Vinyl Record Visual -->
+                        <div class="relative flex justify-center items-center py-4">
+                            <!-- Outer Vinyl Disc -->
+                            <div id="vinyl-disc" class="w-48 h-48 sm:w-56 sm:h-56 rounded-full bg-gray-900 border-4 border-gray-800 shadow-2xl flex items-center justify-center relative animate-spin-slow paused">
+                                <!-- Vinyl Grooves -->
+                                <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full border border-gray-700/50 flex items-center justify-center">
+                                    <div class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border border-gray-700/50 flex items-center justify-center">
+                                        <!-- Album Art Center -->
+                                        <div id="album-cover" class="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-cover bg-center border-4 border-pink-200 shadow-md flex items-center justify-center text-3xl" style="background-image: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?w=300&auto=format&fit=crop&q=80');">
+                                            🌸
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Center Hole -->
+                                <div class="w-4 h-4 rounded-full bg-white absolute shadow-inner border border-gray-400"></div>
+                            </div>
+
+                            <!-- Audio Visualizer Equalizer Bars -->
+                            <div id="audio-visualizer" class="absolute bottom-0 flex gap-1 h-8 items-end opacity-40">
+                                <div class="w-1.5 bg-pink-500 rounded-t h-3 transition-all duration-150"></div>
+                                <div class="w-1.5 bg-pink-400 rounded-t h-6 transition-all duration-150"></div>
+                                <div class="w-1.5 bg-purple-400 rounded-t h-2 transition-all duration-150"></div>
+                                <div class="w-1.5 bg-pink-500 rounded-t h-7 transition-all duration-150"></div>
+                                <div class="w-1.5 bg-purple-500 rounded-t h-4 transition-all duration-150"></div>
+                            </div>
+                        </div>
+
+                        <!-- Music Controls & Track List -->
+                        <div class="flex flex-col text-left space-y-4">
+                            <div class="bg-white/60 p-4 rounded-2xl border border-white/80 shadow-sm">
+                                <span class="text-[10px] font-bold text-pink-500 uppercase tracking-wider">Now Playing</span>
+                                <h3 id="track-title" class="font-display font-bold text-lg text-gray-800 leading-snug">Kota Ini Tak Sama Tanpamu</h3>
+                                <p id="track-artist" class="text-xs text-gray-500">Special Acoustic Birthday Mix</p>
+                                <audio id="music-audio" preload="metadata"></audio>
+                                <p id="music-status" class="mt-2 text-[11px] text-gray-500" role="status">
+                                    Tekan play untuk memulai musik.
+                                </p>
+
+                                <!-- Progress Bar -->
+                                <div class="mt-4">
+                                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden cursor-pointer" onclick="seekAudio(event)">
+                                        <div id="song-progress" class="bg-pink-500 h-full w-1/3 transition-all"></div>
+                                    </div>
+                                    <div class="flex justify-between text-[10px] text-gray-400 mt-1">
+                                        <span id="time-current">0:00</span>
+                                        <span id="time-total">0:00</span>
+                                    </div>
+                                </div>
+
+                                <!-- Player Buttons -->
+                                <div class="flex items-center justify-center space-x-4 mt-3">
+                                    <button onclick="prevTrack()" class="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-pink-500 shadow-sm">
+                                        <i class="fas fa-backward text-xs"></i>
+                                    </button>
+                                    <button onclick="togglePlayMusic()" id="btn-play-pause" class="w-12 h-12 rounded-full bg-pink-500 hover:bg-pink-600 text-white flex items-center justify-center shadow-lg transition-transform active:scale-95">
+                                        <i class="fas fa-play text-base ml-0.5"></i>
+                                    </button>
+                                    <button onclick="nextTrack()" class="w-9 h-9 rounded-full bg-white border border-gray-200 flex items-center justify-center text-gray-600 hover:text-pink-500 shadow-sm">
+                                        <i class="fas fa-forward text-xs"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Playlist Items -->
+                            <div class="space-y-2">
+                                <div onclick="selectTrack(0)" class="track-item p-2.5 rounded-xl bg-white/80 hover:bg-pink-100/50 cursor-pointer transition-all border border-pink-200 flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-pink-500">01</span>
+                                        <div class="text-xs">
+                                            <div class="font-bold text-gray-700">Kota Ini Tak Sama Tanpamu</div>
+                                            <div class="text-gray-400">Nadhif Basalamah</div>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-music text-xs text-pink-400"></i>
+                                </div>
+
+                                <div onclick="selectTrack(1)" class="track-item p-2.5 rounded-xl bg-white/40 hover:bg-pink-100/50 cursor-pointer transition-all border border-white/60 flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-400">02</span>
+                                        <div class="text-xs">
+                                            <div class="font-bold text-gray-700">Masa Ini, Nanti, dan Masa Indah Lainnya</div>
+                                            <div class="text-gray-400">Special Birthday Song</div>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-heart text-xs text-gray-300"></i>
+                                </div>
+
+                                <div onclick="selectTrack(2)" class="track-item p-2.5 rounded-xl bg-white/40 hover:bg-pink-100/50 cursor-pointer transition-all border border-white/60 flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-xs font-bold text-gray-400">03</span>
+                                        <div class="text-xs">
+                                            <div class="font-bold text-gray-700">I've Always Loved You</div>
+                                            <div class="text-gray-400">Arash Buana</div>
+                                        </div>
+                                    </div>
+                                    <i class="fas fa-heart text-xs text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CATCH HEARTS MINI GAME -->
+            <section id="section-game" class="w-full max-w-2xl hidden flex-col items-center">
+                <div class="glass-card w-full rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+                    <img class="card-mascot card-mascot-left" src="bear-reference.jpeg" alt="" aria-hidden="true">
+                    <img class="card-mascot card-mascot-right" src="cat-reference.jpeg" alt="" aria-hidden="true">
+                    <span class="card-confetti card-confetti-left">🍵</span>
+                    <span class="card-confetti card-confetti-right">💚</span>
+                    <div class="inline-block bg-pink-100 text-pink-600 px-4 py-1.5 rounded-full font-display font-semibold text-xs mb-3 border border-pink-200">
+                        🎮 Mini Game Spesial
+                    </div>
+                    <h2 class="font-display font-bold text-2xl text-gray-800 mb-2">Tangkap Hati & Bintang</h2>
+                    <p class="text-xs text-gray-500 max-w-md mx-auto">Hati +1, bintang +3, awan -2, dan maskot memberi bonus +5!</p>
+                    <div class="catch-game-hud">
+                        <div class="catch-stat">Skor: <span id="game-score">0</span></div>
+                        <div class="catch-stat">Waktu: <span id="game-time">30</span>s</div>
+                        <div class="catch-stat">Target: 20</div>
+                    </div>
+                    <div id="catch-game-board" class="catch-game-board" aria-label="Papan mini game tangkap hati dan bintang"></div>
+                    <button onclick="startCatchGame()" id="game-start-button" class="mt-5 clay-button bg-pink-500 hover:bg-pink-600 text-white font-display font-semibold text-sm py-3 px-7 rounded-2xl">
+                        ▶ Mulai Game
+                    </button>
+                    <p id="game-message" class="mt-4 hidden p-3 bg-pink-50 border border-pink-200 rounded-2xl text-pink-700 font-medium text-sm"></p>
+                </div>
+            </section>
+
+            <!-- SECTION 4: MATCHA DATE VOUCHER TICKET -->
+            <section id="section-matcha" class="w-full max-w-xl hidden flex-col items-center">
+                <div class="glass-card w-full rounded-3xl p-6 sm:p-8 text-center relative overflow-hidden">
+                    <img class="card-mascot card-mascot-left" src="bear-reference.jpeg" alt="" aria-hidden="true">
+                    <img class="card-mascot card-mascot-right" src="cat-reference.jpeg" alt="" aria-hidden="true">
+                    <span class="card-confetti card-confetti-left">💖</span>
+                    <span class="card-confetti card-confetti-right">⭐</span>
+                    
+                    <div class="inline-block bg-matcha text-green-800 px-4 py-1 rounded-full font-display font-semibold text-xs mb-3">
+                        🍵 Hadiah Tambahan Spesial!
+                    </div>
+                    <h2 class="font-display font-bold text-2xl text-gray-800 mb-2">Matcha Date Voucher</h2>
+                    <p class="text-xs text-gray-500 mb-6">Kupon khusus yang bisa dimanifestasikan & ditukarkan kapan saja!</p>
+
+                    <div class="matcha-experience rounded-3xl p-4 mb-5 text-center">
+                        <div class="text-[11px] font-bold uppercase tracking-[.2em] text-emerald-700">Matcha Garden Ritual</div>
+                        <p id="matcha-caption" class="text-xs text-emerald-800/75 mt-1">Sentuh cangkirnya untuk merasakan hangatnya matcha ✨</p>
+                        <div id="matcha-art" class="matcha-art" role="button" tabindex="0" aria-label="Sentuh gambar matcha untuk membuat efek riak">
+                            <img src="matcha-reference.jpeg" alt="Ilustrasi matcha latte dengan hiasan bunga sakura">
+                            <span class="matcha-ripple"></span>
+                            <span class="matcha-steam">〰<br>〰</span>
+                        </div>
+                        <div class="matcha-controls">
+                            <button type="button" class="matcha-action" onclick="whiskMatcha()">🥄 Kocok Matcha</button>
+                            <button type="button" class="matcha-action" onclick="sprinkleMatcha()">🌸 Tabur Bunga</button>
+                            <button type="button" class="matcha-action" onclick="pourIce()">🧊 Tuangkan Es Batu</button>
+                        </div>
+                        <div class="mt-3 flex items-center justify-between text-[10px] font-bold text-emerald-700">
+                            <span>Ritual matcha</span><span id="matcha-progress-label">0 / 3</span>
+                        </div>
+                        <div class="matcha-meter mt-1"><div id="matcha-progress" class="matcha-meter-fill"></div></div>
+                        <p id="matcha-reward" class="hidden mt-3 rounded-xl bg-white/70 px-3 py-2 text-[11px] font-semibold text-emerald-800">
+                            🍵Yeayyyyy! Voucher spesialnya menunggumu di bawah yaaa.✨
+                        </p>
+                    </div>
+
+                    <!-- Ticket Card Design -->
+                    <div class="bg-gradient-to-r from-emerald-100 via-green-50 to-teal-100 rounded-2xl p-6 border-2 border-emerald-200/80 shadow-lg relative text-left">
+                        
+                        <!-- Left Cutout Notch -->
+                        <div class="w-6 h-6 rounded-full bg-white/80 border border-emerald-200 absolute -left-3 top-1/2 -translate-y-1/2"></div>
+                        <!-- Right Cutout Notch -->
+                        <div class="w-6 h-6 rounded-full bg-white/80 border border-emerald-200 absolute -right-3 top-1/2 -translate-y-1/2"></div>
+
+                        <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="space-y-2">
+                                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-bold uppercase tracking-wider">
+                                    <span>VVIP Ticket</span>
+                                </div>
+                                <h3 class="font-display font-bold text-xl text-emerald-900">Matcha & Cake Date</h3>
+                                <p class="text-xs text-emerald-700">Berlaku untuk: <strong class="text-emerald-900">Tiaaa</strong></p>
+                                <div class="text-[11px] text-emerald-600 pt-2 border-t border-emerald-200/60">
+                                    <i class="fas fa-check-circle mr-1"></i> Bebas pilih tempat & matcha latte favoritmu!
+                                </div>
+                            </div>
+
+                            <!-- 3D Cute Matcha Graphic Sticker -->
+                            <div class="w-24 h-24 bg-white/80 rounded-2xl p-2 flex flex-col items-center justify-center border border-emerald-200 shadow-sm shrink-0">
+                                <div class="text-4xl mb-1">🍵</div>
+                                <span class="text-[9px] font-bold text-emerald-800 text-center">VALID ANYTIME</span>
+                            </div>
+                        </div>
+
+                        <!-- Ticket Footer Barcode Style -->
+                        <div class="mt-4 pt-3 border-t border-dashed border-emerald-300 flex justify-between items-center text-[10px] text-emerald-700 font-mono">
+                            <span>TICKET CODE: TIAAA-BDAY-2026</span>
+                            <button onclick="claimVoucher()" id="btn-claim" class="bg-emerald-600 hover:bg-emerald-700 text-white font-sans font-bold px-3 py-1 rounded-lg transition-all text-xs">
+                                Claim Voucher ✨
+                            </button>
+                        </div>
+                    </div>
+
+                    <p id="claim-status" class="mt-4 text-xs font-medium text-emerald-700 hidden">
+                        🎉 Voucher berhasil diklaim! Screenshot halaman ini & kirimkan saat mau jajan Matcha ya!
+                    </p>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="w-full text-center py-4 text-xs text-gray-500 font-medium">
+            <p>© 2026 Crafted with ❤️ for Tiaaa's Birthday Experience</p>
+        </footer>
+
+    </div>
+
+    <script>
+        // --- Web Audio API Synthesizer for Interactive Sound Effects ---
+        let audioCtx = null;
+        let isMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Play pleasant chime or click sound
+        function playSound(type) {
+            if (isMuted) return;
+            initAudio();
+            if (!audioCtx) return;
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, now);
+                osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+                osc.start(now);
+                osc.stop(now + 0.1);
+            } else if (type === 'blow') {
+                // Noise buffer to simulate blowing air
+                const bufferSize = audioCtx.sampleRate * 0.4;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(400, now);
+                filter.frequency.linearRampToValueAtTime(100, now + 0.4);
+                
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+                noise.start(now);
+            } else if (type === 'success') {
+                // Play melodic arpeggio for celebration
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const noteOsc = audioCtx.createOscillator();
+                    const noteGain = audioCtx.createGain();
+                    noteOsc.type = 'triangle';
+                    noteOsc.frequency.setValueAtTime(freq, now + idx * 0.1);
+                    noteGain.gain.setValueAtTime(0.2, now + idx * 0.1);
+                    noteGain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.3);
+                    noteOsc.connect(noteGain);
+                    noteGain.connect(audioCtx.destination);
+                    noteOsc.start(now + idx * 0.1);
+                    noteOsc.stop(now + idx * 0.1 + 0.3);
+                });
+            }
+        }
+
+        function toggleAudioSynth() {
+            isMuted = !isMuted;
+            const btn = document.getElementById('btn-sound-toggle');
+            btn.innerHTML = isMuted ? '<i class="fas fa-volume-mute text-sm text-gray-400"></i>' : '<i class="fas fa-volume-up text-sm text-pink-500"></i>';
+        }
+
+        // --- Ambient Background Floating Hearts ---
+        function createHeartParticles() {
+            const container = document.getElementById('heart-container');
+            const heartIcons = ['🌸', '💖', '✨', '💕', '☁️', '🎈'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle text-xl';
+                heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (6 + Math.random() * 6) + 's';
+                heart.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(heart);
+            }
+
+            const mascotImages = ['bear-reference.jpeg', 'cat-reference.jpeg'];
+            for (let i = 0; i < 4; i++) {
+                const mascot = document.createElement('img');
+                mascot.className = 'mascot-particle';
+                mascot.src = mascotImages[i % mascotImages.length];
+                mascot.alt = '';
+                mascot.setAttribute('aria-hidden', 'true');
+                mascot.style.left = (8 + Math.random() * 84) + 'vw';
+                mascot.style.animationDuration = (10 + Math.random() * 6) + 's';
+                mascot.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(mascot);
+            }
+        }
+        createHeartParticles();
+
+        function celebrateMascot(mascot) {
+            playSound('click');
+            mascot.classList.remove('is-happy');
+            void mascot.offsetWidth;
+            mascot.classList.add('is-happy');
+            setTimeout(() => mascot.classList.remove('is-happy'), 700);
+        }
+
+        // --- Passcode Unlock Gatekeeper ---
+        function unlockExperience() {
+            const input = document.getElementById('passcode-input').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            if (input === '2209') {
+                playSound('success');
+                confetti({
+                    particleCount: 80,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                document.getElementById('screen-welcome').classList.add('hidden');
+                document.getElementById('screen-main').classList.remove('hidden');
+                document.getElementById('nav-tabs').classList.remove('hidden');
+                document.getElementById('nav-tabs').classList.add('flex');
+                selectTrack(0);
+                togglePlayMusic();
+            } else {
+                playSound('click');
+                errorMsg.classList.remove('hidden');
+            }
+        }
+
+        // --- Tab Switching Logic ---
+        function switchTab(tabName) {
+            playSound('click');
+            if (isLetterMusicActive && tabName !== 'letter') {
+                exitLetterMusic();
+            }
+            const sections = ['cake', 'letter', 'music', 'matcha', 'game'];
+            
+            sections.forEach(sec => {
+                const el = document.getElementById(`section-${sec}`);
+                if (sec === tabName) {
+                    el.classList.remove('hidden');
+                    el.classList.add('flex');
+                } else {
+                    el.classList.add('hidden');
+                    el.classList.remove('flex');
+                }
+
+                // Desktop tab styling
+                const desktopTab = document.getElementById(`tab-${sec}`);
+                if (desktopTab) {
+                    if (sec === tabName) {
+                        desktopTab.className = "px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-300 bg-pink-500 text-white shadow-sm";
+                    } else {
+                        desktopTab.className = "px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:text-pink-500 transition-all duration-300";
+                    }
+                }
+
+                // Mobile tab styling
+                const mobTab = document.getElementById(`mob-tab-${sec}`);
+                if (mobTab) {
+                    if (sec === tabName) {
+                        mobTab.className = "p-2 rounded-xl text-xs font-bold text-pink-500 flex flex-col items-center";
+                    } else {
+                        mobTab.className = "p-2 rounded-xl text-xs font-semibold text-gray-500 flex flex-col items-center";
+                    }
+                }
+            });
+        }
+
+        // --- Interactive Cake & Candle Logic ---
+        let extinguishedCount = 0;
+        let blowStream = null;
+        let blowAudioContext = null;
+        let blowAnalyser = null;
+        let blowAnimationFrame = null;
+        let blowStartedAt = 0;
+
+        function extinguishCandle(id) {
+            const flame = document.getElementById(`flame-${id}`);
+            if (flame && !flame.classList.contains('hidden')) {
+                playSound('blow');
+                flame.classList.add('hidden');
+                extinguishedCount++;
+
+                if (extinguishedCount === 2) {
+                    stopBlowDetection();
+                    onAllCandlesExtinguished();
+                }
+            }
+        }
+
+        function blowOutAllCandles() {
+            if (extinguishedCount === 2) return;
+            playSound('blow');
+            for (let i = 1; i <= 2; i++) {
+                const flame = document.getElementById(`flame-${i}`);
+                if (flame) {
+                    flame.classList.add('hidden');
+                }
+            }
+            extinguishedCount = 2;
+            stopBlowDetection();
+            onAllCandlesExtinguished();
+        }
+
+        async function startBlowDetection() {
+            if (extinguishedCount === 2 || blowStream) return;
+            const status = document.getElementById('blow-status');
+            try {
+                blowStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                blowAudioContext = new AudioContext();
+                blowAnalyser = blowAudioContext.createAnalyser();
+                blowAnalyser.fftSize = 1024;
+                blowAudioContext.createMediaStreamSource(blowStream).connect(blowAnalyser);
+                blowStartedAt = 0;
+                document.getElementById('btn-mic-blow').innerHTML = '<span>🎙️ Mendengarkan Tiupan...</span>';
+                status.innerText = 'Tiup ke mikrofon selama sesaat untuk memadamkan lilin.';
+                detectBlow();
+            } catch (error) {
+                blowStream = null;
+                status.innerText = 'Izin mikrofon diperlukan untuk fitur tiup suara.';
+                status.classList.add('text-rose-500');
+            }
+        }
+
+        function detectBlow() {
+            if (!blowAnalyser || extinguishedCount === 2) return;
+            const samples = new Uint8Array(blowAnalyser.fftSize);
+            blowAnalyser.getByteTimeDomainData(samples);
+            const volume = Math.sqrt(samples.reduce((sum, sample) => {
+                const normalized = (sample - 128) / 128;
+                return sum + normalized * normalized;
+            }, 0) / samples.length);
+            if (volume > 0.16) {
+                if (!blowStartedAt) blowStartedAt = performance.now();
+                if (performance.now() - blowStartedAt > 220) {
+                    blowOutAllCandles();
+                    return;
+                }
+            } else {
+                blowStartedAt = 0;
+            }
+            blowAnimationFrame = requestAnimationFrame(detectBlow);
+        }
+
+        function stopBlowDetection() {
+            if (blowAnimationFrame) cancelAnimationFrame(blowAnimationFrame);
+            blowAnimationFrame = null;
+            if (blowStream) blowStream.getTracks().forEach(track => track.stop());
+            if (blowAudioContext && blowAudioContext.state !== 'closed') blowAudioContext.close();
+            blowStream = null;
+            blowAudioContext = null;
+            blowAnalyser = null;
+            const button = document.getElementById('btn-mic-blow');
+            if (button) button.innerHTML = '<span>🎙️ Tiup dengan Suara</span>';
+        }
+
+        function onAllCandlesExtinguished() {
+            playSound('success');
+            document.getElementById('wish-message').classList.remove('hidden');
+            document.getElementById('btn-blow').disabled = true;
+            document.getElementById('btn-mic-blow').disabled = true;
+            document.getElementById('blow-status').innerText = 'Lilin sudah padam dan tidak dapat dinyalakan kembali.';
+            
+            // Trigger celebration confetti
+            confetti({
+                particleCount: 120,
+                spread: 100,
+                origin: { y: 0.5 },
+                colors: ['#FFB3D1', '#C8E6C9', '#FFD54F', '#BA68C8']
+            });
+        }
+
+        // --- Envelope Opening Logic ---
+        let isEnvelopeOpen = false;
+
+        function toggleEnvelope() {
+            playSound('click');
+            const env = document.getElementById('envelope-box');
+            const letter = document.getElementById('letter-content');
+            const coverText = document.getElementById('envelope-cover-text');
+
+            isEnvelopeOpen = !isEnvelopeOpen;
+
+            if (isEnvelopeOpen) {
+                enterLetterMusic();
+                env.classList.add('open');
+                coverText.classList.add('opacity-0');
+                letter.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                env.classList.remove('open');
+                coverText.classList.remove('opacity-0');
+                letter.classList.add('opacity-0', 'pointer-events-none');
+                exitLetterMusic();
+            }
+        }
+
+        // --- Aesthetic Music Vinyl Player Logic ---
+        const playlist = [
+            {
+                title: "Kota Ini Tak Sama Tanpamu",
+                artist: "Nadhif Basalamah",
+                src: "music/kota-ini-tak-sama-tanpamu.mp3",
+                cover: "gift-reference.jpeg"
+            },
+            {
+                title: "Masa Ini, Nanti, dan Masa Indah Lainnya",
+                artist: "Special Birthday Song",
+                src: "music/masa-ini-nanti-dan-masa-indah-lainnya.mp3",
+                cover: "cake-reference.jpeg"
+            },
+            {
+                title: "I've Always Loved You",
+                artist: "Arash Buana",
+                src: "music/ive-always-loved-you.mp3",
+                cover: "cake-reference.jpeg"
+            }
+        ];
+
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+        let isLetterMusicActive = false;
+        let mainTrackIndex = 0;
+        let mainTrackTime = 0;
+        let mainWasPlaying = false;
+        const musicAudio = document.getElementById('music-audio');
+
+        function formatTime(seconds) {
+            if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
+            return `${minutes}:${remainingSeconds}`;
+        }
+
+        function updateMusicProgress() {
+            const progress = musicAudio.duration ? (musicAudio.currentTime / musicAudio.duration) * 100 : 0;
+            document.getElementById('song-progress').style.width = `${progress}%`;
+            document.getElementById('time-current').innerText = formatTime(musicAudio.currentTime);
+        }
+
+        function setMusicStatus(message, isError = false) {
+            const status = document.getElementById('music-status');
+            status.innerText = message;
+            status.classList.toggle('text-rose-500', isError);
+            status.classList.toggle('text-gray-500', !isError);
+        }
+
+        function updateMusicButton() {
+            document.getElementById('btn-play-pause').innerHTML = isPlaying
+                ? '<i class="fas fa-pause text-base"></i>'
+                : '<i class="fas fa-play text-base ml-0.5"></i>';
+        }
+
+        function togglePlayMusic() {
+            playSound('click');
+            const vinyl = document.getElementById('vinyl-disc');
+            if (musicAudio.paused) {
+                playCurrentTrack();
+            } else {
+                musicAudio.pause();
+                isPlaying = false;
+                vinyl.classList.add('paused');
+                updateMusicButton();
+                setMusicStatus('Musik dijeda.');
+            }
+        }
+
+        function playCurrentTrack() {
+            return musicAudio.play().then(() => {
+                isPlaying = true;
+                document.getElementById('vinyl-disc').classList.remove('paused');
+                updateMusicButton();
+                setMusicStatus('Musik sedang diputar.');
+            }).catch(() => {
+                isPlaying = false;
+                document.getElementById('vinyl-disc').classList.add('paused');
+                updateMusicButton();
+                setMusicStatus('File musik belum tersedia. Tambahkan file MP3 di folder music.', true);
+            });
+        }
+
+        function stopMusic() {
+            musicAudio.pause();
+            musicAudio.currentTime = 0;
+            isPlaying = false;
+            document.getElementById('vinyl-disc').classList.add('paused');
+            document.getElementById('song-progress').style.width = '0%';
+            document.getElementById('time-current').innerText = '0:00';
+            updateMusicButton();
+        }
+
+        function enterLetterMusic() {
+            mainTrackIndex = currentTrackIndex;
+            mainTrackTime = musicAudio.currentTime || 0;
+            mainWasPlaying = !musicAudio.paused;
+            isLetterMusicActive = true;
+            selectTrack(1);
+            togglePlayMusic();
+        }
+
+        function exitLetterMusic() {
+            if (!isLetterMusicActive) return;
+            musicAudio.pause();
+            isPlaying = false;
+            isLetterMusicActive = false;
+            currentTrackIndex = mainTrackIndex;
+            musicAudio.src = playlist[mainTrackIndex].src;
+            musicAudio.load();
+            const mainTrack = playlist[mainTrackIndex];
+            document.getElementById('track-title').innerText = mainTrack.title;
+            document.getElementById('track-artist').innerText = mainTrack.artist;
+            document.getElementById('album-cover').style.backgroundImage = `url('${mainTrack.cover}')`;
+            musicAudio.addEventListener('loadedmetadata', function restoreMainPosition() {
+                musicAudio.removeEventListener('loadedmetadata', restoreMainPosition);
+                musicAudio.currentTime = Math.min(mainTrackTime, musicAudio.duration || mainTrackTime);
+                updateMusicProgress();
+                if (mainWasPlaying) {
+                    togglePlayMusic();
+                } else {
+                    updateMusicButton();
+                }
+            });
+            updateMusicButton();
+        }
+
+        function selectTrack(index, options = {}) {
+            playSound('click');
+            const shouldPlay = options.resume === undefined ? isPlaying : options.resume;
+            currentTrackIndex = index;
+            musicAudio.pause();
+            isPlaying = false;
+            musicAudio.src = playlist[index].src;
+            musicAudio.load();
+            document.getElementById('song-progress').style.width = '0%';
+            document.getElementById('time-current').innerText = '0:00';
+            document.getElementById('time-total').innerText = '0:00';
+            
+            const track = playlist[index];
+            document.getElementById('track-title').innerText = track.title;
+            document.getElementById('track-artist').innerText = track.artist;
+            document.getElementById('album-cover').style.backgroundImage = `url('${track.cover}')`;
+            updateMusicButton();
+            document.getElementById('vinyl-disc').classList.add('paused');
+            setMusicStatus('Tekan play untuk memulai musik.');
+
+            if (shouldPlay && !isLetterMusicActive) {
+                musicAudio.addEventListener('canplay', () => playCurrentTrack(), { once: true });
+            }
+        }
+
+        function nextTrack(autoPlay = false) {
+            const shouldPlay = autoPlay || !musicAudio.paused;
+            currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+            selectTrack(currentTrackIndex, { resume: shouldPlay });
+        }
+
+        function prevTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+            selectTrack(currentTrackIndex);
+        }
+
+        function seekAudio(e) {
+            const rect = e.currentTarget.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            if (musicAudio.duration) {
+                musicAudio.currentTime = Math.max(0, Math.min(1, clickX / width)) * musicAudio.duration;
+                updateMusicProgress();
+            }
+        }
+
+        musicAudio.addEventListener('loadedmetadata', () => {
+            document.getElementById('time-total').innerText = formatTime(musicAudio.duration);
+        });
+        musicAudio.addEventListener('timeupdate', updateMusicProgress);
+        musicAudio.addEventListener('ended', () => {
+            if (isLetterMusicActive) {
+                isPlaying = false;
+                updateMusicButton();
+                return;
+            }
+            nextTrack(true);
+        });
+        musicAudio.addEventListener('play', () => {
+            isPlaying = true;
+            document.getElementById('vinyl-disc').classList.remove('paused');
+            updateMusicButton();
+        });
+        musicAudio.addEventListener('pause', () => {
+            isPlaying = false;
+            document.getElementById('vinyl-disc').classList.add('paused');
+            updateMusicButton();
+        });
+        musicAudio.addEventListener('error', () => {
+            setMusicStatus('File musik tidak ditemukan. Tambahkan MP3 ke folder music.', true);
+        });
+        selectTrack(0);
+
+        // --- Catch Hearts & Stars Mini Game ---
+        let catchGameTimer = null;
+        let catchGameSpawner = null;
+        let catchGameScore = 0;
+        let catchGameTime = 30;
+        let catchGameRunning = false;
+
+        function updateCatchGameHud() {
+            document.getElementById('game-score').innerText = catchGameScore;
+            document.getElementById('game-time').innerText = catchGameTime;
+        }
+
+        function clearCatchGameObjects() {
+            document.querySelectorAll('#catch-game-board .catch-object').forEach(object => object.remove());
+        }
+
+        function finishCatchGame() {
+            catchGameRunning = false;
+            clearInterval(catchGameTimer);
+            clearInterval(catchGameSpawner);
+            clearCatchGameObjects();
+            const button = document.getElementById('game-start-button');
+            button.innerText = '↻ Main Lagi';
+            const message = document.getElementById('game-message');
+            message.classList.remove('hidden');
+            if (catchGameScore >= 20) {
+                message.innerText = '🎁 Kamu menang! Hadiah spesialmu adalah pelukan virtual dari bear & cat 💕';
+                confetti({ particleCount: 150, spread: 110, origin: { y: .55 }, colors: ['#FFB3D1', '#D9C2FF', '#FFD54F'] });
+            } else {
+                message.innerText = `Waktu habis dengan skor ${catchGameScore}. Coba lagi untuk mencapai target 20! ✨`;
+            }
+        }
+
+        function catchObject(object, points) {
+            if (!catchGameRunning) return;
+            catchGameScore = Math.max(0, catchGameScore + points);
+            object.remove();
+            updateCatchGameHud();
+            if (catchGameScore >= 20) finishCatchGame();
+        }
+
+        function spawnCatchObject() {
+            if (!catchGameRunning) return;
+            const board = document.getElementById('catch-game-board');
+            const object = document.createElement('button');
+            object.type = 'button';
+            object.className = 'catch-object';
+            const roll = Math.random();
+            let points;
+            if (roll < .14) {
+                object.classList.add('mascot');
+                const mascot = document.createElement('img');
+                mascot.src = Math.random() < .5 ? 'bear-reference.jpeg' : 'cat-reference.jpeg';
+                mascot.alt = 'Bonus maskot';
+                object.appendChild(mascot);
+                points = 5;
+            } else if (roll < .48) {
+                object.innerText = '💖';
+                points = 1;
+            } else if (roll < .78) {
+                object.innerText = '⭐';
+                points = 3;
+            } else {
+                object.innerText = '☁️';
+                points = -2;
+            }
+            object.style.left = `${Math.random() * 86 + 4}%`;
+            object.style.animationDuration = `${2.7 + Math.random() * 1.8}s`;
+            object.addEventListener('click', () => catchObject(object, points), { once: true });
+            object.addEventListener('animationend', () => object.remove(), { once: true });
+            board.appendChild(object);
+        }
+
+        function startCatchGame() {
+            clearInterval(catchGameTimer);
+            clearInterval(catchGameSpawner);
+            clearCatchGameObjects();
+            catchGameScore = 0;
+            catchGameTime = 30;
+            catchGameRunning = true;
+            updateCatchGameHud();
+            document.getElementById('game-message').classList.add('hidden');
+            document.getElementById('game-start-button').innerText = '🎯 Game Berjalan...';
+            catchGameSpawner = setInterval(spawnCatchObject, 650);
+            catchGameTimer = setInterval(() => {
+                catchGameTime--;
+                updateCatchGameHud();
+                if (catchGameTime <= 0) finishCatchGame();
+            }, 1000);
+        }
+
+        // --- Interactive Matcha Garden ---
+        let matchaRitualSteps = new Set();
+
+        function updateMatchaRitual() {
+            const total = matchaRitualSteps.size;
+            document.getElementById('matcha-progress').style.width = `${(total / 3) * 100}%`;
+            document.getElementById('matcha-progress-label').innerText = `${total} / 3`;
+            if (total === 3) {
+                document.getElementById('matcha-reward').classList.remove('hidden');
+                confetti({ particleCount: 70, spread: 75, origin: { y: .62 }, colors: ['#A5D66A', '#F7B6C8', '#FFF3B0'] });
+                document.getElementById('matcha-caption').innerText = 'Ritual lengkap! Sekarang waktunya matcha date 💚';
+            }
+        }
+
+        function touchMatcha() {
+            const art = document.getElementById('matcha-art');
+            art.classList.remove('is-sipped', 'is-steaming');
+            void art.offsetWidth;
+            art.classList.add('is-sipped', 'is-steaming');
+            document.getElementById('matcha-caption').innerText = 'Hangat, lembut, dan dibuat khusus untuk Tiaaa 🌿';
+            matchaRitualSteps.add('touch');
+            updateMatchaRitual();
+            playSound('click');
+        }
+
+        function whiskMatcha() {
+            const art = document.getElementById('matcha-art');
+            art.classList.remove('is-whisking');
+            void art.offsetWidth;
+            art.classList.add('is-whisking');
+            document.getElementById('matcha-caption').innerText = 'Matcha sedang dikocok sampai berbusa lembut 🥄';
+            matchaRitualSteps.add('whisk');
+            updateMatchaRitual();
+            playSound('click');
+        }
+
+        function sprinkleMatcha() {
+            const art = document.getElementById('matcha-art');
+            for (let i = 0; i < 7; i++) {
+                const petal = document.createElement('span');
+                petal.className = 'matcha-petal';
+                petal.innerText = i % 2 ? '🌸' : '🌷';
+                petal.style.left = `${35 + Math.random() * 30}%`;
+                petal.style.top = `${18 + Math.random() * 14}%`;
+                petal.style.setProperty('--petal-x', `${(Math.random() - .5) * 180}px`);
+                petal.style.setProperty('--petal-y', `${55 + Math.random() * 95}px`);
+                art.appendChild(petal);
+                petal.addEventListener('animationend', () => petal.remove(), { once: true });
+            }
+            document.getElementById('matcha-caption').innerText = 'Kelopak sakura untuk date yang makin manis 🌸';
+            matchaRitualSteps.add('petal');
+            updateMatchaRitual();
+            playSound('success');
+        }
+
+        function pourIce() {
+            const art = document.getElementById('matcha-art');
+            for (let i = 0; i < 6; i++) {
+                const ice = document.createElement('span');
+                ice.className = 'matcha-ice';
+                ice.innerText = '🧊';
+                ice.style.left = `${38 + Math.random() * 24}%`;
+                ice.style.top = `${8 + Math.random() * 10}%`;
+                ice.style.animationDelay = `${i * 70}ms`;
+                art.appendChild(ice);
+                ice.addEventListener('animationend', () => ice.remove(), { once: true });
+            }
+            art.classList.remove('is-sipped');
+            void art.offsetWidth;
+            art.classList.add('is-sipped');
+            document.getElementById('matcha-caption').innerText = 'Es batu dituangkan... matcha ice favorit Tiaaa siap diminum 🧊💚';
+            matchaRitualSteps.add('ice');
+            updateMatchaRitual();
+            playSound('click');
+        }
+
+        document.getElementById('matcha-art').addEventListener('click', touchMatcha);
+        document.getElementById('matcha-art').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                touchMatcha();
+            }
+        });
+
+        // --- Voucher Claim Logic ---
+        function claimVoucher() {
+            playSound('success');
+            document.getElementById('claim-status').classList.remove('hidden');
+            document.getElementById('btn-claim').innerText = 'Claimed! ✓';
+            document.getElementById('btn-claim').className = 'bg-gray-400 text-white font-sans font-bold px-3 py-1 rounded-lg text-xs cursor-default';
+            
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.7 },
+                colors: ['#A5D6A7', '#C8E6C9', '#E8F5E9']
+            });
+        }
+
+        // --- Emotion Reaction Logic ---
+        function selectReaction(btn, emotion) {
+            playSound('click');
+            const allCards = document.querySelectorAll('.reaction-card');
+            allCards.forEach(c => {
+                c.classList.remove('bg-pink-200', 'border-pink-400');
+                c.classList.add('bg-white/80');
+            });
+
+            btn.classList.remove('bg-white/80');
+            btn.classList.add('bg-pink-200', 'border-pink-400');
+
+            document.getElementById('reaction-thanks').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
