@@ -39,6 +39,13 @@
     </script>
 
     <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        html, body {
+            width: 100%;
+            max-width: 100%;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background: linear-gradient(135deg, #FFDBF0 0%, #EAE6FF 50%, #F5ECFF 100%);
@@ -565,6 +572,42 @@
             font: 600 11px 'Plus Jakarta Sans', sans-serif;
             pointer-events: none;
         }
+        .game-reward-gallery {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            overscroll-behavior-x: contain;
+            padding: 4px 3px 10px;
+            scrollbar-width: thin;
+            scrollbar-color: #f3a9c6 rgba(255,255,255,.55);
+            touch-action: pan-x;
+        }
+        .game-reward-slide {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+            overflow: hidden;
+            border-radius: 22px;
+            border: 2px solid rgba(255,255,255,.9);
+            background: rgba(255,255,255,.62);
+            box-shadow: 0 10px 20px rgba(171, 111, 138, .16);
+        }
+        .game-reward-slide img {
+            display: block;
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+        .game-reward-slide figcaption {
+            padding: 9px 10px 11px;
+            color: #a54b79;
+            font: 700 11px 'Plus Jakarta Sans', sans-serif;
+        }
+        .game-reward-gallery::-webkit-scrollbar { height: 5px; }
+        .game-reward-gallery::-webkit-scrollbar-thumb {
+            background: #f3a9c6;
+            border-radius: 999px;
+        }
         .catch-object {
             position: absolute;
             top: -64px;
@@ -624,6 +667,98 @@
             background: #FFB3D1;
             border-radius: 10px;
         }
+
+        .app-shell,
+        .app-header,
+        #screen-main,
+        #screen-welcome {
+            min-width: 0;
+            max-width: 100%;
+        }
+        .app-header {
+            gap: 12px;
+        }
+        .app-brand {
+            min-width: 0;
+            flex: 1 1 auto;
+        }
+        .app-brand-copy {
+            min-width: 0;
+        }
+        .app-brand-copy h1,
+        .app-brand-copy p {
+            overflow-wrap: anywhere;
+        }
+        #nav-tabs {
+            min-width: 0;
+            max-width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #nav-tabs button {
+            white-space: nowrap;
+        }
+
+        @media (max-width: 639px) {
+            #nav-tabs.flex {
+                display: none !important;
+            }
+            .app-shell {
+                width: 100%;
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .app-header {
+                align-items: center;
+                padding: 12px;
+                border-radius: 22px;
+            }
+            .app-brand {
+                gap: 8px;
+            }
+            .app-brand > div:first-child {
+                flex: 0 0 38px;
+                width: 38px;
+                height: 38px;
+            }
+            .app-brand-copy h1 {
+                font-size: 15px;
+                line-height: 1.2;
+            }
+            .app-brand-copy p {
+                font-size: 10px;
+            }
+            #btn-sound-toggle {
+                flex: 0 0 36px;
+                width: 36px;
+                height: 36px;
+            }
+            #screen-main > .sm\:fixed {
+                width: auto;
+                max-width: calc(100vw - 24px);
+                min-width: 0;
+                padding: 6px;
+                gap: 2px;
+            }
+            #screen-main > .sm\:fixed button {
+                min-width: 0;
+                flex: 1 1 0;
+                padding: 7px 2px;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+            #screen-main > .sm\:fixed button span:last-child {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+            #screen-main section,
+            #screen-main .glass-card {
+                min-width: 0;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body class="text-gray-800 antialiased selection:bg-pink-200 selection:text-pink-800">
@@ -640,15 +775,15 @@
     </div>
 
     <!-- MAIN APP CONTAINER -->
-    <div class="relative z-10 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
+    <div class="app-shell relative z-10 min-h-screen flex flex-col items-center justify-between p-4 sm:p-6 md:p-8 max-w-5xl mx-auto">
 
         <!-- HEADER / NAVIGATION -->
-        <header class="w-full flex justify-between items-center py-4 px-6 glass-card rounded-3xl mb-6">
-            <div class="flex items-center space-x-3">
+        <header class="app-header w-full flex justify-between items-center py-4 px-6 glass-card rounded-3xl mb-6">
+            <div class="app-brand flex items-center space-x-3">
                 <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-pink-400 to-rose-300 flex items-center justify-center text-white font-display font-bold text-xl shadow-md">
                     T
                 </div>
-                <div>
+                <div class="app-brand-copy">
                     <h1 class="font-display font-bold text-lg text-gray-800 leading-tight">"Tiaaa's Special Day ✨"</h1>
                     <p class="text-xs text-pink-500 font-medium">Special Birthday Experience</p>
                 </div>
@@ -1011,6 +1146,22 @@
                         ▶ Mulai Game
                     </button>
                     <p id="game-message" class="mt-4 hidden p-3 bg-pink-50 border border-pink-200 rounded-2xl text-pink-700 font-medium text-sm"></p>
+                    <div id="game-reward" class="hidden mt-5 text-center" hidden aria-hidden="true">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-100 border border-yellow-200 text-yellow-700 text-[11px] font-bold">
+                            🎁 Hadiah kemenangan untuk Tiaaa
+                        </div>
+                        <p class="mt-2 mb-3 text-xs text-gray-500">Geser gambar ke kiri atau kanan untuk melihat semua hadiah ✨</p>
+                        <div class="game-reward-gallery" aria-label="Slider hadiah mini game">
+                            <figure class="game-reward-slide">
+                                <img src="game-reward-bear-cat.jpeg" alt="Bear dan cat merayakan ulang tahun ke-20">
+                                <figcaption>Bear & cat mengucapkan happy birthday 💕</figcaption>
+                            </figure>
+                            <figure class="game-reward-slide">
+                                <img src="game-reward-bear-bouquet.jpeg" alt="Bear membawa buket bunga untuk hadiah ulang tahun">
+                                <figcaption>Hadiah bunga manis khusus untukmu 🌷</figcaption>
+                            </figure>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -1636,10 +1787,22 @@
             message.classList.remove('hidden');
             if (catchGameScore >= 20) {
                 message.innerText = '🎁 Kamu menang! Hadiah spesialmu adalah pelukan virtual dari bear & cat 💕';
+                const reward = document.getElementById('game-reward');
+                reward.hidden = false;
+                reward.setAttribute('aria-hidden', 'false');
+                reward.classList.remove('hidden');
                 confetti({ particleCount: 150, spread: 110, origin: { y: .55 }, colors: ['#FFB3D1', '#D9C2FF', '#FFD54F'] });
             } else {
-                message.innerText = `Waktu habis dengan skor ${catchGameScore}. Coba lagi untuk mencapai target 20! ✨`;
+                hideGameReward();
+                message.innerText = `Waktu habis dengan skor ${catchGameScore}. Hadiah belum terbuka — ayo coba lagi sampai menang dan mencapai target 20! 💪✨`;
             }
+        }
+
+        function hideGameReward() {
+            const reward = document.getElementById('game-reward');
+            reward.hidden = true;
+            reward.setAttribute('aria-hidden', 'true');
+            reward.classList.add('hidden');
         }
 
         function catchObject(object, points) {
@@ -1691,6 +1854,7 @@
             catchGameRunning = true;
             updateCatchGameHud();
             document.getElementById('game-message').classList.add('hidden');
+            hideGameReward();
             document.getElementById('game-start-button').innerText = '🎯 Game Berjalan...';
             catchGameSpawner = setInterval(spawnCatchObject, 650);
             catchGameTimer = setInterval(() => {
